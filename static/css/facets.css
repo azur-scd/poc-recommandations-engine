@@ -1,0 +1,86 @@
+.t {
+	
+}
+select {
+  font-size: 11px;
+  height: 30px;
+  width: 100px;
+  
+}
+.language {
+    display: block;
+    float: right;
+    position: relative;
+    vertical-align: top;
+}
+.facetsMainDiv {
+    background-color: #F8F8F8;
+    border-bottom: 1px solid #E4E4E4;
+    border-top: 1px solid #E4E4E4;
+    clear: both;
+    color: #32322F;
+    display: inline-block;
+    font-size: 80%;
+    height: auto;
+    vertical-align: text-bottom;
+    width: 100%;
+}
+/*
+* {
+    border: medium none;
+    margin: 0;
+    padding: 0;
+}
+body {
+    color: #32322F;
+    font-family: Arial,verdana;
+    font-size: 100%;
+}
+*/
+
+.facetInnerDiv {
+    float: left;
+    padding: 0 1em 0.3em 0;
+    width: 80%;
+}
+
+
+.facetSpan {
+    background-color: #FFFFFF;
+    border: 1px solid #D7D9DA;
+    color: #424E53;
+    display: inline-block;
+    height: auto;
+    margin: 0.3em 0 0 0.5em;
+    padding-left: 0.5em;
+}
+
+
+
+..facetsMainDiv span.refineSpan {
+    clear: right;
+    display: block;
+    float: left;
+    margin-left: 1em;
+    margin-top: 0.5em;
+    white-space: nowrap;
+    width: auto;
+}
+
+strong {
+    font-style: normal;
+    font-weight: bold;
+}
+.total {
+  color: #8C8C8C;
+    font-size: 80%;
+    font-weight: bold;
+    
+}
+
+em {
+	color: #000000;
+	font-style: normal;
+    font-weight: bold;
+     font-size: 80%;
+}

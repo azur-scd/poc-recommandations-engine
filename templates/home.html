@@ -1,0 +1,59 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css')}}">
+  
+     </head>
+     <body>
+       <div class="container-fluid">
+        <nav class="navbar navbar-light bg-light justify-content-between">
+            <a class="navbar-brand">Prototype pour un système de recommandation</a>
+            <div class="form-inline language">
+                <select class="form-control" onchange="javascript:searchRequest.locale=$(this).val();search()">
+                    <options>
+                    <option value="fr" selected>Français</option>
+                    <option value="en">Anglais</option>
+                    </options>
+                  </select>
+                </div>
+          </nav>
+          
+          <div class="row">
+            <div class="col-2" id="facets">
+            </div>
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-inline col-12">
+                        <input class="form-control mr-sm-2 col-8" type="search" id="search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" id="submit">Chercher</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8" id="facetsbreadcrumbs">
+                    </div>
+                    <div class="col-4" id="totalResults">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 list-group" id="results">
+                      </div>
+                  </div>
+            </div>
+       <div class="col-2" id="details">
+            
+       </div>
+       </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="{{ url_for('static', filename= 'js/i18n/i18n.js')}}"></script>
+   <script src="{{ url_for('static', filename= 'js/i18n/translations.js')}}"></script>
+   <script src="{{ url_for('static', filename= 'js/main.js')}}"></script>
+     </body>
+     </html>
