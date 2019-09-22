@@ -26,7 +26,7 @@ I18n.translations = {
 	lcc: 'LCC',
 	topic: 'Sujet',
 	tlevel: 'Afficher uniquement',
-	creationdate: 'Date de Création',
+	creationdate: 'Date',
 	pfilter: 'Resource Type',
 	domain: 'Collection',
 	genre: 'Genre',
@@ -34,7 +34,7 @@ I18n.translations = {
 	sortedby: 'Trié Par',
 	relevance : 'Pertinence',
 	title: 'Titre',
-	author: 'Author',
+	author: 'Auteur',
 	date: 'Date (le plus récent)',
 	popularity: 'Popularité'
   }

@@ -35,7 +35,7 @@ $("#submit").click(function(){
 		searchRequest.term = $('#search').val();
 		
 		if (searchRequest.term == undefined || searchRequest.term == '') {
-			alert('Please enter a search term');
+			alert('Entrez un terme de recherche');
 			return;
 		}
 		
@@ -48,14 +48,16 @@ $("#submit").click(function(){
 			index = (searchRequest.page - 1) * 10;
 			if (index == 0) index = 1;
 		} 
+        searchRequest.term = (searchRequest.term).normalize ("NFKD").replace (/[\u0300-\u036F]/g, "")
+		//query = "query=any,contains," + encodeURIComponent(searchRequest.term);
+		query = "query=any,contains," + searchRequest.term.replace(' ', '%2B');
 		
-		query = "query=any,exact," + encodeURIComponent(searchRequest.term);
-
 		/***************** ADD FACETS TO QUERY IF NEEDED ****************/
 		if (searchRequest.facets.length > 0) {
 			$.each(searchRequest.facets, function(key, facet) {
 				facetData = facet.split("__");
-				query += "&query=facet_" + facetData[0] + ",exact," + encodeURIComponent(facetData[1].replace(',', ' '));
+				//query += "&query=facet_" + facetData[0] + ",exact," + encodeURIComponent(facetData[1].replace(',', ' '));
+				query += "&query=facet_" + facetData[0] + ",exact," + facetData[1].replace(' ', '%2B');
 			});
         } 
         
@@ -73,7 +75,7 @@ $("#submit").click(function(){
      	'&sortField=' +  searchRequest.sort + 
 		//'&lang=fre&json=true&callback=parseResponse';
 		'&lang=fre';
-	
+	    console.log(myurl)
 		
 		$.ajax({ 
 			url : myurl, 
@@ -122,7 +124,7 @@ $("#submit").click(function(){
 					        	var pnx = record;
 					        	if (record && record.PrimoNMBib) {
 					        		pnx = record.PrimoNMBib.record;
-					        	}
+								}
 					        	var res;
 					        	//store records in memory, for details pane
                                 recordsCache[index] = pnx;
@@ -238,40 +240,27 @@ $("#submit").click(function(){
 				  "</div>"+
 				  "<div class='card-block px-2'>"+
 				  "<h4 class='card-title'>"+ record.display.title +"</h4>"+
-				  "<p class='card-text'>ISBN : "+ record.display.identifier +"</p>"+
-				  "<p class='card-text'>date : "+ record.display.creationdate +"</p>"+
-				  "<p class='card-text'>Auteur(s) : "+ record.display.creator +"</p>"+
-				  "<p class='card-text'>Contributeurs(s) : "+ record.display.contributor +"</p>"+
-				  "<p class='card-text'>Editeur : "+ record.display.contributor +"</p>"+
-				  "<p class='card-text'>Mention d'édition : "+ record.display.publisher +"</p>"+
-				  "<div class='w-100'>Collection : "+ record.display.seriestitle +"</div>"+
+				  "<p class='card-text'><b>ISBN</b> : "+ record.display.identifier +"</p>"+
+				  "<p class='card-text'><b>Date</b> : "+ record.display.creationdate +"</p>"+
+				  "<p class='card-text'><b>Auteur(s)</b> : "+ record.display.creator +"</p>"+
+				  "<p class='card-text'><b>Contributeurs(s)</b> : "+ record.display.contributor +"</p>"+
+				  "<p class='card-text'><b>Editeur</b> : "+ record.display.publisher +"</p>"+
+				  "<div class='w-100'><b>Collection</b> : "+ record.display.seriestitle +"</div>"+
 				  "</div>"+
 				  "<div class='card-block px-2'>"+
-				  "<p class='card-text'>Sujets : "+ record.display.subject +"</p>"+
-				  "<p class='card-text'>lds25 : "+ record.display.lds25 +"</p>"+
-				  "<p class='card-text'>Description : "+ record.display.description +"</p>"+
+				  "<p class='card-text'><b>Description</b> : "+ record.display.description +"</p>"+
 				  "</div>"+
-
-
 				  " <div class='card-footer w-100 text-muted'>"+
+				  "<p class='card-text'><b>Sujets</b> : "+ record.display.subject +"</p>"+
 				  "</div>"+
 				  "</div>";
 				  $("#details").append(content);
-		/*var table = "<table class='table-fill'><tbody class='table-hover'>";	
-		for (var i = 0 ; i < displaySections.length; i++) {
-			 $.each(record[displaySections[i]],  function(key, record) {
-				 table += "<tr><td class='text-left'>" + key + "</td><td class='text-left'>" + record + "</td></tr>";
-			 });
-		}		 
-		$("#details").append(table + "</tbody></table>");*/
 	}
 	//recommandations functions
     function getRecommandations(index) {
-
         if (recordsCache[index] == undefined) {
             return;
-        }
-        
+        }       
 		var record = recordsCache[index];
                 $.getJSON("/recommand/"+record.control.sourcerecordid.replace(/^0+/, ''),
                 function(data) {
@@ -280,7 +269,10 @@ $("#submit").click(function(){
 						margin: 10,
 						nav: true,
 						items:2
-					  });   
+					  });  
+						$("div.item").on('click', function(event){
+						//getDetailsRecommandations($(this).data('data'))
+					});					 
 					data.map(function(item){getRecord(index,item.num)})  					
 				}); 
 
@@ -291,7 +283,10 @@ $("#submit").click(function(){
 						margin: 10,
 						nav: true,
 						items:2
-					  });   
+					  });
+					  $("div.item").on('click', function(event){
+						//getDetailsRecommandations($(this).data('data'))
+					});	   
 					data.map(function(item){getRecordFromGraph(index,item.num)})  					
 				});      		
         }
@@ -303,9 +298,9 @@ $("#submit").click(function(){
 				var url = 'http://' + searchRequest.host + searchRequest.proxyitempath + '?doc_num=' + id;
                 $.getJSON(url,
                 function(data) { 
-                    var html = "<div class='item'><a href='#'>" + data.title + "</a><p><small class='muted'>"+data.date+"</smalll></p><p>"+data.subject.join(",")+"</p></div>"
-                    return  $("#simrec"+index).trigger('add.owl.carousel', [html, index]).trigger('refresh.owl.carousel');
-                   //return $(".simrec"+index).append("<div>" + data.title + "<p><small class='muted'>"+data.date+"</smalll></p><p>"+data.subject.join(",")+"</p></div>")
+					var html = "<div class='item'><b>" + data.title + "</b><p><small class='muted'>"+data.date+"</smalll></p><p>"+data.subject.join(",")+"</p></div>" 
+					$('div.item').data('data',data);
+					return  $("#simrec"+index).trigger('add.owl.carousel', [html, index]).trigger('refresh.owl.carousel');
                 });     
 		}
 
@@ -316,10 +311,33 @@ $("#submit").click(function(){
 				var url = 'http://' + searchRequest.host + searchRequest.proxyitempath + '?doc_num=' + id;
                 $.getJSON(url,
                 function(data) { 
-                    var html = "<div class='item'><a href='#'>" + data.title + "</a><p><small class='muted'>"+data.date+"</smalll></p><p>"+data.subject.join(",")+"</p></div>"
-                    return  $("#userec"+index).trigger('add.owl.carousel', [html, index]).trigger('refresh.owl.carousel');
-                  
+                    var html = "<div class='item'><b>" + data.title + "</b><p><small class='muted'>"+data.date+"</smalll></p><p>"+data.subject.join(",")+"</p></div>"
+					$('div.item').data('data',data);
+					return  $("#userec"+index).trigger('add.owl.carousel', [html, index]).trigger('refresh.owl.carousel');                 
                 });     
 		}
+
+//[unused] detail on right sidebar for recommandation records
+function getDetailsRecommandations(data) {
+	$("#details").empty();
+	var content;
+	content = "<div class='card flex-row flex-wrap'>"+
+			  "<div class='card-header border-0'>"+
+			  data.title+
+			  "</div>"+
+			  "<div class='card-block px-2'>"+
+				  "<p class='card-text'>ISBN : "+ data.isbn.join(';') +"</p>"+
+				  "<p class='card-text'>date : "+ data.date +"</p>"+
+				  "<p class='card-text'>Auteur(s) : "+ data.creator.join(';') +"</p>"+
+				  "<p class='card-text'>Contributeur(s) : "+ data.contributor.join(';') || undefined +"</p>"+
+				  "<p class='card-text'>Editeur : "+ data.publisher.join(';')+"</p>"+
+				  "<div class='w-100'>Collection : "+ data.series.join(';') || undefined +"</div>"+
+				  "</div>"+
+			  " <div class='card-footer w-100 text-muted'>"+
+			  "<p class='card-text'>Sujet(s) : "+ data.topic.join(';')+"</p>"+
+			  "</div>"+
+			  "</div>";
+			  $("#details").append(content);
+}
 		
 		
