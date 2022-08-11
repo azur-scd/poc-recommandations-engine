@@ -134,7 +134,8 @@ $("#submit").click(function(){
 								res = "<div class='list-group-item list-group-item-action flex-column align-items-start'>"+
 								    "<div class='row'>"+
 									  "<div class='col-md-12'>"+
-									  "<div class='float-right'>"+pnx.display.lds20+"</div>"+
+									  //"<div class='float-right'>"+pnx.display.lds20+"</div>"+
+									  "<div class='float-right'><img src='http://images.amazon.com/images/P/"+pnx.addata.lad01+".01._SS[size]_SCLZZZZZZZ_.jpg' width='100' /></div>"+
                                       "<h4 class='mb-1'><strong><a href='#' onclick='displayDetails(" + index + ")'>"+ pnx.display.title + "</a></strong></h4>"+
                                       "<small>" + pnx.facets.creationdate + "</small>"+
                                       "<p>"+ pnx.display.creator +"</p>";
@@ -235,9 +236,7 @@ $("#submit").click(function(){
 		console.log(record)
 		var content;
 		content = "<div class='card flex-row flex-wrap'>"+
-				  "<div class='card-header border-0'>"+
-				  record.display.lds20+
-				  "</div>"+
+				  "<div class='card-header border-0'><img src='http://images.amazon.com/images/P/"+record.addata.lad01+".01._SS[size]_SCLZZZZZZZ_.jpg' width='150' /></div>"+
 				  "<div class='card-block px-2'>"+
 				  "<h4 class='card-title'>"+ record.display.title +"</h4>"+
 				  "<p class='card-text'><b>ISBN</b> : "+ record.display.identifier +"</p>"+
@@ -276,7 +275,8 @@ $("#submit").click(function(){
 					data.map(function(item){getRecord(index,item.num)})  					
 				}); 
 
-				$.getJSON("/recommand-graph/"+record.control.sourcerecordid.replace(/^0+/, ''),
+				$.getJSON("/recommand-graph-csv/"+record.control.sourcerecordid.replace(/^0+/, ''),
+				//$.getJSON("/recommand/"+record.control.sourcerecordid.replace(/^0+/, ''), -> si bdd Neo4j en back
                 function(data) { 
 					  $("#userec"+index).owlCarousel({
 						stagePadding: 20,
@@ -287,7 +287,8 @@ $("#submit").click(function(){
 					  $("div.item").on('click', function(event){
 						//getDetailsRecommandations($(this).data('data'))
 					});	   
-					data.map(function(item){getRecordFromGraph(index,item.num)})  					
+					data.map(function(item){getRecordFromGraph(index,item.target)})   
+					//for data.map(function(item){getRecordFromGraph(index,item.num)}) -> si bdd Neo4j en back					
 				});      		
         }
         
