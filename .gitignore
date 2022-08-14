@@ -6,3 +6,11 @@
 ###################
 *.ipynb_checkpoints
 __pycache__
+
+# Ignore huge pickle files #
+###################
+*.pkl.compressed
+
+# Ignore raw file extract from Aleph with the ID Lecteur field #
+###################
+notebooks/data/01_raw/sja_tous_prets.csv

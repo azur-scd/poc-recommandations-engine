@@ -24,7 +24,13 @@ def home():
     return render_template('home.html')
 
 df = pd.read_csv('notebooks/data/05_model_input/exemplaires_sja_nltk_complete.csv', sep = ';')
-loaded_model = joblib.load('notebooks/data/06_models/model.pkl')
+loaded_model = joblib.load('notebooks/data/06_models/model.pkl.compressed')
+"""
+Alternative if the model.pkl file is externalized :
+from urllib.request import urlopen
+url = EXTERNAL_URL_OF_PICKLE_FILE
+loaded_model = joblib.load(urlopen(url))
+"""
 indices = pd.Series(df.index, index=df['num']).drop_duplicates()
 
 @app.route('/recommand/<int:num>', methods = ['GET'])
